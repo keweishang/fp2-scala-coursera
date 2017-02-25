@@ -88,7 +88,7 @@ trait Solver extends GameDef {
    * with the history how it was reached.
    */
   lazy val pathsToGoal: Stream[(Block, List[Move])] = pathsFromStart filter {
-    case (block, history) => block.isStanding && done(block)
+    case (block, history) => done(block)
   }
 
   /**

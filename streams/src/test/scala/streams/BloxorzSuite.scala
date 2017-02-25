@@ -1,11 +1,8 @@
 package streams
 
-import org.scalatest.FunSuite
-
 import org.junit.runner.RunWith
+import org.scalatest.FunSuite
 import org.scalatest.junit.JUnitRunner
-
-import Bloxorz._
 
 @RunWith(classOf[JUnitRunner])
 class BloxorzSuite extends FunSuite {
@@ -64,6 +61,35 @@ class BloxorzSuite extends FunSuite {
     }
   }
 
+  test("neighborsWithHistory level 1") {
+    new Level1 {
+      val expected = Set(
+        (Block(Pos(1,2),Pos(1,3)), List(Right,Left,Up)),
+        (Block(Pos(2,1),Pos(3,1)), List(Down,Left,Up))
+      )
+      val b = Block(Pos(1,1),Pos(1,1))
+      val history = List(Left,Up)
+
+      assert(neighborsWithHistory(b, history).toSet.equals(expected), "1,1's legal neighbors")
+    }
+  }
+
+  test("newNeighborsOnly level 1") {
+    new Level1 {
+      val expected = Set(
+        (Block(Pos(2,1),Pos(3,1)), List(Down,Left,Up))
+      )
+
+      val neighbors = Set(
+        (Block(Pos(1,2),Pos(1,3)), List(Right,Left,Up)),
+        (Block(Pos(2,1),Pos(3,1)), List(Down,Left,Up))
+      ).toStream
+
+      val visited = Set(Block(Pos(1,2),Pos(1,3)), Block(Pos(1,1),Pos(1,1)))
+
+      assert(newNeighborsOnly(neighbors, visited).toSet.equals(expected), "only new neighbors get returned")
+    }
+  }
 
 	test("optimal solution for level 1") {
     new Level1 {

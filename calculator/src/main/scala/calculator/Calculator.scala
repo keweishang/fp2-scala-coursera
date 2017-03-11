@@ -17,7 +17,7 @@ object Calculator {
   def eval(expr: Expr, references: Map[String, Signal[Expr]], visited: Set[String]): Double = expr match {
     case Literal(v) => v
     case Ref(n) => {
-      if (visited contains n) Double.NaN
+      if (visited.contains(n) || references.get(n).isEmpty) Double.NaN
       else eval(references.get(n).get(), references, visited + n)
     }
     case Plus(a, b) => eval(a, references, visited) + eval(b, references, visited)
